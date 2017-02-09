@@ -1,0 +1,14 @@
+if not cloned from git 
+git clone https://github.com/jhipster/jhipster-registry.git
+
+cd microservices/jhipster-registry
+./mvnw
+
+cd  microserv_gradle/microservices
+./gradlew
+
+cd microserv_gradle/microservicesGate
+./gradlew
+
+cd microserv_gradle/microservicesGate
+gulp 
