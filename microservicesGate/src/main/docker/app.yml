@@ -1,0 +1,49 @@
+#-------------------------------------------------------------------------------
+# Note for using the rate-limiting:
+#   The comment part won't be copied if you use the subgenerator docker-compose
+#   you have to manually copy it
+#-------------------------------------------------------------------------------
+version: '2'
+services:
+    microservicesgate-app:
+        image: microservicesgate
+        external_links:
+            - microservicesgate-mariadb:mariadb
+            # Uncomment to have Cassandra working with the gateway
+            # - microservicesgate-cassandra:cassandra
+            - microservicesgate-elasticsearch:elasticsearch
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/microservicesgate
+            - SPRING_DATA_CASSANDRA_CONTACTPOINTS=cassandra
+            - JHIPSTER_SLEEP=30 # gives time for the Cassandra cluster to start and execute the migration scripts
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    microservicesgate-mariadb:
+        extends:
+            file: mariadb.yml
+            service: microservicesgate-mariadb
+    # Uncomment to have Cassandra working with the gateway
+    # microservicesgate-cassandra:
+    #     extends:
+    #         file: cassandra-cluster.yml
+    #         service: microservicesgate-cassandra
+    # microservicesgate-cassandra-migration:
+    #     extends:
+    #         file: cassandra-migration.yml
+    #         service: microservicesgate-cassandra-migration
+    #     environment:
+    #         - CREATE_KEYSPACE_SCRIPT=create-keyspace-prod.cql
+    microservicesgate-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: microservicesgate-elasticsearch
+    jhipster-registry:
+        extends:
+            file: jhipster-registry.yml
+            service: jhipster-registry
+        environment:
+            - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=file:./central-config/docker-config/

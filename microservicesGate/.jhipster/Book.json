@@ -1,0 +1,29 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "book",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "publishDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "author",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170209113934",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "book",
+    "pagination": "no",
+    "microserviceName": "microservices",
+    "searchEngine": "elasticsearch"
+}

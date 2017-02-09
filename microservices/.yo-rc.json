@@ -1,0 +1,37 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "4.0.2",
+    "baseName": "microservices",
+    "packageName": "ru.gpsbox.natmob",
+    "packageFolder": "ru/gpsbox/natmob",
+    "serverPort": "8081",
+    "authenticationType": "jwt",
+    "hibernateCache": "hazelcast",
+    "clusteredHttpSession": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mariadb",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "gradle",
+    "enableSocialSignIn": false,
+    "jwtSecretKey": "370c7d77a8073a3bdca0d461e3ca768fbbe6844e",
+    "enableTranslation": true,
+    "applicationType": "microservice",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "skipClient": true,
+    "skipUserManagement": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en",
+      "ru"
+    ],
+    "clientPackageManager": "yarn",
+    "clientFramework": "angular1"
+  }
+}
