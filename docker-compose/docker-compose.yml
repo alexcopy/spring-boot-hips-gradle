@@ -1,0 +1,73 @@
+version: '2'
+services:
+    microservices-app:
+        image: microservices
+        external_links:
+            - microservices-mariadb:mariadb
+            - microservices-elasticsearch:elasticsearch
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/microservices
+            - JHIPSTER_SLEEP=10
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+    microservices-mariadb:
+        container_name: microservices-mariadb
+        image: mariadb:10.1.17
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=microservices
+        command: mysqld --lower_case_table_names=1 --skip-ssl
+    microservices-elasticsearch:
+        container_name: microservices-elasticsearch
+        image: elasticsearch:2.4.1
+    
+    microservicesgate-app:
+        image: microservicesgate
+        external_links:
+            - microservicesgate-mariadb:mariadb
+            - microservicesgate-elasticsearch:elasticsearch
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/microservicesgate
+            - SPRING_DATA_CASSANDRA_CONTACTPOINTS=cassandra
+            - JHIPSTER_SLEEP=30
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+        ports:
+            - 8080:8080
+    microservicesgate-mariadb:
+        container_name: microservicesgate-mariadb
+        image: mariadb:10.1.17
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=microservicesgate
+        command: mysqld --lower_case_table_names=1 --skip-ssl
+    microservicesgate-elasticsearch:
+        container_name: microservicesgate-elasticsearch
+        image: elasticsearch:2.4.1
+    
+    jhipster-registry:
+        extends:
+            file: jhipster-registry.yml
+            service: jhipster-registry
+
+    jhipster-elasticsearch:
+        extends:
+            file: jhipster-console.yml
+            service: jhipster-elasticsearch
+    jhipster-logstash:
+        extends:
+          file: jhipster-console.yml
+          service: jhipster-logstash
+    jhipster-console:
+        extends:
+            file: jhipster-console.yml
+            service: jhipster-console
+
